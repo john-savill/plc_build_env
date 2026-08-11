@@ -23,4 +23,6 @@ This repo will consist of:
 4. Tidy up
    - UML diagram process explanation
    - Implementation requirements and process 
-
+5. Further work
+   - Include building of ctrlX apps (C, python) using the SDK
+   - Deployment for BR systems

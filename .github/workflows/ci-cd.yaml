@@ -1,1 +1,91 @@
-#empty .yaml file for workflow
+name: Structured Text CI/CD
+
+on:
+  push:
+    branches:
+      #- main
+  pull_request:
+    branches:
+      #- main
+      #commented out for the moment
+
+jobs:
+  # 1. Validation Stage
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Structured Text Requirements
+        # Use a simple Bash script to check for the required tag format
+        run: |
+          echo "Starting structured text validation..."
+          
+          ST_FILES=$(find src -name "*.st")
+          IECST_FILES=$(find src -name "*.iecst")
+          
+          ALL_FILES=($ST_FILES $IECST_FILES)
+          
+          if [ ${#ALL_FILES[@]} -eq 0 ]; then
+            echo "No .st or .iecst files found in the /src directory. Skipping validation."
+          else
+            VALIDATION_FAILED=false
+            for file in "${ALL_FILES[@]}"; do
+              echo "Checking file: $file"
+              if ! grep -q '\[SWR-.*-' "$file"; then
+                echo "Validation FAILED in file: $file - Missing required tag format [SWR-(Project_name)-(requirement_number)]"
+                VALIDATION_FAILED=true
+              fi
+            done
+
+            if $VALIDATION_FAILED; then
+              echo "--- Validation FAILED. Please fix the missing tags before proceeding. ---"
+              exit 1 # Exit with an error code to fail the job
+            else
+              echo "✅ All structured text files passed the requirement tag validation."
+            fi
+          fi
+
+  # 2. Build Stage (Placeholder)
+  build:
+    runs-on: ubuntu-latest
+    needs: validate # Ensure build only runs if validation passes
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Build Structured Text Project
+        # TODO: Add specific build commands here, RuSTy docs to read
+        run: echo "Build stage completed. Placeholder for actual build commands."
+
+  # 3. Program Verification Stage
+  verify:
+    runs-on: ubuntu-latest
+    needs: build # Ensure verification only runs if build succeeds
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Run Program Verification Tests
+        # TODO: Add actual program verification scripts/tests here
+        run: |
+          echo "Running program verification tests..."
+          
+          echo "Verification step completed successfully."
+
+  # 4. Deployment Stage
+  deploy:
+    runs-on: ubuntu-latest
+    needs: verify # Ensure deployment only runs if verification succeeds
+    steps:
+      - name: Deploy to Target Environment
+        # TODO: Add deployment logic (e.g., deploying to a server, uploading artifacts)
+        run: |
+          echo "Deploying project artifacts..."
+          echo "Deployment step completed successfully."
+
+      - name: Cleanup
+        run: |
+          echo "Cleaning up temporary files and artifacts..."
+          echo "Cleanup complete."

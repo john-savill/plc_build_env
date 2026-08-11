@@ -11,7 +11,7 @@ This repo will consist of:
 ## Plan
 
 1. Add code **[IN PROGRESS]**
-   - .iecst, .st, .yaml
+   - .iecst, .st, .yaml (disabled actions from the settings for the moment).
    - Tag with requirements
 2. Test functionality
    - test Rusty compile

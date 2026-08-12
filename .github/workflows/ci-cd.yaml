@@ -52,18 +52,21 @@ jobs:
             fi
           fi
 
-  # 2. Build Stage (Placeholder)
+    # 2. Build Stage (Runs on Schedule)
   build:
     runs-on: ubuntu-latest
-    needs: validate # Ensure build only runs if validation passes
-    if: github.event_name == 'schedule'
+    needs: validate
+    if: github.event_name == 'schedule' 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
-      - name: Build Structured Text Project
-        # TODO: Add specific build commands here, RuSTy docs to read
-        run: echo "Build stage completed. Placeholder for actual build commands."
+
+      - name: Compile Structured Text Files
+        # Use the 'plc' command from RuSTy to compile all .st files in the /src directory
+        run: |
+          echo "Compiling all .st files in /src directory..."
+          plc "**/*.st"
+        # Note: check compilation command arguments
 
   # 3. Program Verification Stage
   verify:

@@ -1,12 +1,18 @@
 name: Structured Text CI/CD
 
 on:
+  # 1. Trigger for immediate validation on every commit/PR
   push:
     branches:
       - main
   pull_request:
     branches:
       - main
+  
+  # 2. Trigger for scheduled daily build/verify
+  schedule:
+    # Example: Runs every day at midnight UTC
+    - cron: '0 0 * * *' 
 
 jobs:
   # 1. Validation Stage
@@ -50,6 +56,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: validate # Ensure build only runs if validation passes
+    if: github.event_name == 'schedule'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -62,6 +69,7 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     needs: build # Ensure verification only runs if build succeeds
+    if: github.event_name == 'schedule'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -77,6 +85,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: verify # Ensure deployment only runs if verification succeeds
+    if: github.event_name == 'schedule'
     steps:
       - name: Deploy to Target Environment
         # TODO: Add deployment logic (e.g., deploying to a server, uploading artifacts)

@@ -1,0 +1,53 @@
+@startyaml *DRAFT* PLC build environment process
+
+#highlight "jobs" / "validate"
+#highlight "jobs" / "build"
+#highlight "jobs" / "verify"
+#highlight "jobs" / "deploy"
+
+name: Structured Text CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Structured Text Requirements
+
+  build:
+    runs-on: ubuntu-latest
+    needs: validate
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Build Structured Text Project
+
+  verify:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Run Program Verification Tests
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: verify # Ensure deployment only runs if verification succeeds
+    steps:
+      - name: Deploy to Target Environment
+
+      - name: Cleanup
+
+@endyaml

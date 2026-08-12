@@ -8,6 +8,10 @@ This repo will consist of:
  - `doc/` directory for the requirements documents (and any relevant documentation).
  - `src/` directory for the .st and .iecst source code
 
+## Process
+
+![](assets/DRAFT%20%20PLC%20build%20environment%20process.png)
+
 ## Plan
 
 1. Add code **[DONE]**

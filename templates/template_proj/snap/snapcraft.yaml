@@ -1,0 +1,76 @@
+# Getting started
+# See https://ubuntu.com/docs/snapcraft/9/
+# Snapcraft references
+# See https://ubuntu.com/docs/snapcraft/9/reference/snapcraft-yaml/
+
+#CHANGE
+name: template_snap
+#CHANGE
+title: Template for developed app
+version: 1.0.0
+grade: stable
+
+#RELAVANT CONTACT INFORMATION
+contact: https://github.com/boschrexroth/ctrlx-automation-sdk
+license: MIT
+source-code: https://github.com/boschrexroth/ctrlx-automation-sdk
+
+#CHANGE
+summary: Template app for ctrlX OS
+#CHANGE
+description: |
+  Example description
+base: core24
+confinement: strict
+
+platforms:
+  amd64:
+  arm64:
+    build-on: [amd64, arm64]
+    build-for: [arm64]
+
+# define how apps & services are exposed to host system
+apps:
+  app:
+    #CHANGE, make sure this is the same as the executable
+    # for example the set TARGET_PROJECT_NAME from the CMakeLists.txt
+    command: template_app
+    # interfaces to connect to https://snapcraft.io/docs/supported-interfaces
+    #CHANGE, make sure required connection-plugs are listed 
+    # network and datalayer are the default
+    plugs:
+      - network
+      - datalayer
+    daemon: simple
+    passthrough:
+      restart-condition: always
+      restart-delay: 10s
+
+#  describes how to import, and potentially build, each required part of the snap:
+parts:
+  app:
+    plugin: dump
+    source: ./generated/build
+    stage-packages:
+      - ctrlx-datalayer
+
+# another example for Python applications:
+#parts:
+#  client:
+#    plugin: python
+#    source: .
+#    stage-packages:
+#      - ctrlx-datalayer
+
+# describes which interface slots are supported by defining the plugs
+plugs:
+  datalayer:
+    interface: content
+    content: datalayer
+    target: $SNAP_DATA/.datalayer
+
+lint:
+  ignore:
+    - library:
+        - usr/lib/aarch64-linux-gnu/libcomm_datalayer.so.*
+        - usr/lib/x86_64-linux-gnu/libcomm_datalayer.so.*

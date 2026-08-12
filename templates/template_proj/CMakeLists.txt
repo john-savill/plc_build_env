@@ -1,0 +1,127 @@
+#
+# Set CMAKE version
+#
+cmake_minimum_required( VERSION 3.9 )
+
+#
+# Project information
+#
+#CHANGE just requires a relevant name
+project( template_app VERSION 3.0.0 )
+
+#
+# Set TARGET_PROJECT_NAME for each executable (same as snap "app command")
+#
+#CHANGE
+set(TARGET_PROJECT_NAME template_app)
+
+#
+# User dependency directories, set for standard build environment
+#
+set (SDK_ROOT_DIR /home/boschrexroth/ctrlx-automation-sdk/) 
+
+#
+# Option to Build the Snap
+#
+option (BUILD_SNAP "Build Snap Package" OFF)
+
+MESSAGE( STATUS "Selected BuildKit: ${BUILD_KIT}")
+MESSAGE( STATUS "######################################")
+MESSAGE( STATUS "Option: BUILD_SNAP ${BUILD_SNAP}")
+MESSAGE( STATUS "######################################")
+
+#
+# Compiler setting
+#
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DMY_DEBUG")
+
+
+#
+# set libraries dirs and includes
+#
+IF( ${BUILD_KIT} MATCHES "aarch64")
+  SET(PLATFORM_NAME "ubuntu24-gcc-aarch64")
+  SET(SNAP_ARCH "arm64")
+  SET(CMAKE_CXX_COMPILER aarch64-linux-gnu-g++)
+ELSE()
+  SET(PLATFORM_NAME "ubuntu24-gcc-x64")
+  SET(SNAP_ARCH "amd64")
+  SET(CMAKE_CXX_COMPILER g++)
+ENDIF()
+
+#
+# set private include directories
+#
+#CHANGE as required
+SET ( PRIVATE_INCLUDE_DIRS
+  ${CMAKE_CURRENT_LIST_DIR}
+  ${CMAKE_CURRENT_BINARY_DIR}
+  ${CMAKE_CURRENT_LIST_DIR}/include
+  ${SDK_ROOT_DIR}/include
+  ${SDK_ROOT_DIR}/include/comm.datalayer
+  )
+
+#CHANGE define the soruce file(s) to build the executable
+add_executable( ${TARGET_PROJECT_NAME}
+  ./main.cpp
+)
+
+#
+# Set target include directories
+#
+target_include_directories ( ${TARGET_PROJECT_NAME}
+  PUBLIC ${PUBLIC_INCLUDE_DIRS}
+  PUBLIC ${LIBRARY_INCLUDES}
+  PRIVATE ${PRIVATE_INCLUDE_DIRS}
+)
+
+#
+# Set target link libraries
+#
+#CHANGE as required
+target_link_libraries(${TARGET_PROJECT_NAME} -Wl,--no-undefined)
+target_link_libraries(${TARGET_PROJECT_NAME}
+   libcomm_datalayer.so
+)
+
+#
+# Set destination paths for installation
+#
+install( TARGETS ${TARGET_PROJECT_NAME}
+  RUNTIME DESTINATION ${CMAKE_CURRENT_LIST_DIR}/generated/${PLATFORM_NAME}/${CMAKE_BUILD_TYPE}
+  LIBRARY DESTINATION ${CMAKE_CURRENT_LIST_DIR}/generated/${PLATFORM_NAME}/${CMAKE_BUILD_TYPE}
+  ARCHIVE DESTINATION ${CMAKE_CURRENT_LIST_DIR}/generated/${PLATFORM_NAME}/${CMAKE_BUILD_TYPE}
+  COMPONENT ${BUNDLE_PROJECT_NAME}
+)
+
+if (BUILD_SNAP)
+  #
+  # Set destination paths for installation
+  #
+  install( TARGETS ${TARGET_PROJECT_NAME}
+    RUNTIME DESTINATION ${CMAKE_CURRENT_LIST_DIR}/generated/build
+    LIBRARY DESTINATION ${CMAKE_CURRENT_LIST_DIR}/generated/build
+    ARCHIVE DESTINATION ${CMAKE_CURRENT_LIST_DIR}/generated/build
+    COMPONENT ${BUNDLE_PROJECT_NAME}
+  )
+endif(BUILD_SNAP)
+
+#
+# Installation of files
+#
+add_custom_command(TARGET ${TARGET_PROJECT_NAME}
+  POST_BUILD
+  COMMAND make install
+)
+
+if (BUILD_SNAP)
+  add_custom_command( TARGET ${TARGET_PROJECT_NAME}
+    POST_BUILD
+    # COMMAND snapcraft clean
+    COMMAND snapcraft pack --build-for=${SNAP_ARCH} --verbosity=verbose
+    WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+  )
+endif(BUILD_SNAP)

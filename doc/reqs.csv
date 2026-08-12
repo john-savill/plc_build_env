@@ -1,9 +1,5 @@
 tag,requirement description
-[EXPROJ_FR_1],example project functional requirement 1
-[EXPROJ_FR_2],example project functional requirement 2
-[EXPROJ_FR_3],example project functional requirement 3
-[EXPROJ_FR_4],example project functional requirement 4
-[EXPROJ_NFR_1],example project non-functional requirement 1
-[EXPROJ_NFR_2],example project non-functional requirement 2
-[EXPROJ_TSR_1],example project technical safety requirement 1
-[EXPROJ_TSR_2],example project technical safety requirement 2
+[SWR-ROT-001],variables should be labelled with clear identifiers
+[SWR-ROT-002],program should accept 10 variables
+[SWR-ROT-003],program should move the values in the array right
+[SWR-ROT-004],program should rotate cyclically

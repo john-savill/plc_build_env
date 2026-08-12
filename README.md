@@ -25,4 +25,5 @@ This repo will consist of:
    - Implementation requirements and process 
 5. Further work
    - Include building of ctrlX apps (C, python) using the SDK
+     - incorporate the snapcraft.yaml for building the snap
    - Deployment for BR systems

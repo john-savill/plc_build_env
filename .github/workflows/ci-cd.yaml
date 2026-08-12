@@ -3,11 +3,10 @@ name: Structured Text CI/CD
 on:
   push:
     branches:
-      #- main
+      - main
   pull_request:
     branches:
-      #- main
-      #commented out for the moment
+      - main
 
 jobs:
   # 1. Validation Stage
@@ -43,7 +42,7 @@ jobs:
               echo "--- Validation FAILED. Please fix the missing tags before proceeding. ---"
               exit 1 # Exit with an error code to fail the job
             else
-              echo "✅ All structured text files passed the requirement tag validation."
+              echo "All structured text files passed the requirement tag validation."
             fi
           fi
 

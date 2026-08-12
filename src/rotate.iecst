@@ -1,7 +1,8 @@
 PROGRAM RotateProgram
 
 VAR
-    Values : ARRAY[0..9] OF INT := [1,2,3,4,5,6,7,8,9,10];
+    // [SWR-ROT-001] variables should be labelled with clear identifiers
+    Values : ARRAY[0..9] OF INT := [1,2,3,4,5,6,7,8,9,10]; // [SWR-ROT-002] program should accept 10 variables
     Temp : INT;
     i : INT;
 END_VAR
@@ -10,9 +11,11 @@ END_VAR
 Temp := Values[9];
 
 FOR i := 9 TO 1 BY -1 DO
+    // [SWR-ROT-003] program should move the values in the array right
     Values[i] := Values[i - 1];
 END_FOR;
 
+// [SWR-ROT-004] program should rotate cyclically   
 Values[0] := Temp;
 
 END_PROGRAM

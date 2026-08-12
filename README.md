@@ -10,10 +10,10 @@ This repo will consist of:
 
 ## Plan
 
-1. Add code **[IN PROGRESS]**
+1. Add code **[DONE]**
    - .iecst, .st, .yaml (disabled actions from the settings for the moment).
    - Tag with requirements
-2. Test functionality
+2. Test functionality **[IN PROGRESS]**
    - test Rusty compile
    - test bats tests
 3. Test .yaml

@@ -10,7 +10,7 @@ This repo will consist of:
 
 ## Process
 
-![](assets/DRAFT%20%20PLC%20build%20environment%20process.png)
+![](assets/DRAFT%20PLC%20build%20environment%20process.png)
 
 ## Plan
 

@@ -7,8 +7,8 @@ This repo will consist of:
  - `.github/` directory for the .yaml that defines the github action workflow.
  - `doc/` directory for the requirements documents (and any relevant documentation).
  - `src/` directory for the .st and .iecst source code.
- - `assets` diagrams.
- - `templates` useful templates related to CtrlX app building.
+ - `assets/` diagrams.
+ - `templates/` useful templates related to CtrlX app building.
 
 ## Actions
 

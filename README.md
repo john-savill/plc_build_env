@@ -6,7 +6,13 @@ Test repository for PLC CI/CD process
 This repo will consist of:
  - `.github/` directory for the .yaml that defines the github action workflow.
  - `doc/` directory for the requirements documents (and any relevant documentation).
- - `src/` directory for the .st and .iecst source code
+ - `src/` directory for the .st and .iecst source code.
+ - `assets` diagrams.
+ - `templates` useful templates related to CtrlX app building.
+
+## Actions
+
+I have setup a runner on my local RPI 4b for testing. It will be left off most of the time for security. Dependencies will need to be installed. To run: `./actions-runner/run.sh`
 
 ## Process
 
@@ -18,16 +24,17 @@ This repo will consist of:
    - .iecst, .st, .yaml (disabled actions from the settings for the moment).
    - Tag with requirements
 2. Test functionality **[IN PROGRESS]**
+   - configure runner
    - test Rusty compile
    - test bats tests
-3. Test .yaml
+4. Test .yaml
    - configure github actions
    - relevant deployment
    - POC
-4. Tidy up
+5. Tidy up
    - UML diagram process explanation
    - Implementation requirements and process 
-5. Further work
+6. Further work
    - Include building of ctrlX apps (C, python) using the SDK
      - incorporate the snapcraft.yaml for building the snap
    - Deployment for BR systems
